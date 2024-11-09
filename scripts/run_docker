@@ -1,0 +1,14 @@
+#!/bin/bash
+
+IMAGE=ghcr.io/daniestevez/ata-gnuradio:20241109
+HOME_VOLUME=gnuradio-home-${USER}
+DATA_DIR=/mnt/local_data/${USER}
+
+docker run --rm --net host -u 0 --detach \
+       -e HOST_UID=$UID -e HOST_GID=$(id -g) \
+       --cap-add=sys_nice --ulimit rtprio=99 \
+       -v $HOME_VOLUME:/home/ubuntu \
+       -v $DATA_DIR:/data \
+       --name ata-gnuradio-${USER} \
+       $IMAGE \
+       bash -c 'usermod -u $HOST_UID ubuntu && groupmod -g $HOST_GID ubuntu && su - ubuntu -c "jupyter notebook --no-browser --ip 0.0.0.0 --notebook-dir=/data"'

@@ -9,6 +9,7 @@ docker run --rm --net host -u 0 --detach \
        --cap-add=sys_nice --ulimit rtprio=99 \
        -v $HOME_VOLUME:/home/ubuntu \
        -v $DATA_DIR:/data \
+       -v /mnt/buf0:/buf0 \
        --name ata-gnuradio-${USER} \
        $IMAGE \
        bash -c 'usermod -u $HOST_UID ubuntu && groupmod -g $HOST_GID ubuntu && su - ubuntu -c "jupyter notebook --no-browser --ip 0.0.0.0 --notebook-dir=/data"'
